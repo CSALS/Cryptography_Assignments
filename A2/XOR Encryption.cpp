@@ -30,25 +30,21 @@ string xor_hex_strings(string str1, string str2){
     return xored_string.str();
 }
 
+string get_string(char x) {
+    string str(1, x);
+    return str;    
+} 
+
 string solution() {
     string str; cin >> str;
-    vector<string> xor_strings;
     int n = str.length();
-    itr(i,n-1) str += "0";
-    xor_strings.pb(str);
-    itr(i, n-1) {
-        int len = str.length();
-        str.erase(str.begin() + len - 1);
-        str = "0" + str;
-        xor_strings.pb(str);
+    string plain_text = "";
+    plain_text += get_string(str[0]);
+    itr1(i, 1, (n+1)/2) {
+        // cout << str[i] << " " << plain_text[i-1] << endl;
+        plain_text += xor_hex_strings(get_string(str[i]), get_string(str[i-1]));
     }
-    string xor_result = "";
-    itr(i, str.length()) xor_result += "0";
-    // for(string s : xor_strings) cout << s << endl;
-    itr(i, xor_strings.size()) {
-        xor_result = xor_hex_strings(xor_result, xor_strings[i]);
-    }
-    return xor_result;
+    return plain_text;
 }
 int32_t main() {
     cout << solution();
