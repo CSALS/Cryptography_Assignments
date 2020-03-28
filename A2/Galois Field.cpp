@@ -66,7 +66,10 @@ string subtract_binary(string a, string b) {
     return res;
 }
 
+// A*B % C
 string division(string A, string B, string C) {
+    reverse(A.begin(), A.end());
+    reverse(B.begin(), B.end());
     int m = A.length(), n = B.length();
     vector<int> prod(m + n - 1); // Will have f(x) * g(x)
     itr(i, m + n - 1) prod[i] = 0;
@@ -84,7 +87,7 @@ string division(string A, string B, string C) {
     // Divide C by prod
     string m_x = C;
     if(degree(p_x) <= degree(m_x)) {
-        return p_x;
+        return p_x.substr(p_x.length() - 8);
     }
     int ct = degree(p_x) -  degree(m_x);
     while(ct--) {
@@ -100,24 +103,79 @@ string division(string A, string B, string C) {
         p_x = subtract_binary(p_x, m_x);
         // cout << p_x << endl;
     }
-    return p_x;
-} 
+    return p_x.substr(p_x.length() - 8);
+}
 
-string solution() {
-    string f, g, m; cin >> f >> g >> m;
-    reverse(f.begin(), f.end());
-    reverse(g.begin(), g.end());
-    string r_x = division(f, g, m);
-    int i = 0;
-    for(; i < r_x.length(); ++i) {
-        if(r_x[i] == '1') break;
+string hexToBinary(string s){ 
+      unordered_map<char, string> dict1; 
+      dict1['0']= "0000"; 
+      dict1['1']= "0001"; 
+      dict1['2']= "0010"; 
+      dict1['3']= "0011"; 
+      dict1['4']= "0100"; 
+      dict1['5']= "0101"; 
+      dict1['6']= "0110"; 
+      dict1['7']= "0111"; 
+      dict1['8']= "1000"; 
+      dict1['9']= "1001"; 
+      dict1['A']= "1010"; 
+      dict1['B']= "1011"; 
+      dict1['C']= "1100"; 
+      dict1['D']= "1101"; 
+      dict1['E']= "1110"; 
+      dict1['F']= "1111"; 
+
+      string binary = ""; 
+      for(char c : s){ 
+            binary += dict1[c];
+      } 
+      return binary; 
+}
+
+string binaryToHex(string s){ 
+      unordered_map<string, char> dict1; 
+      dict1["0000"] = '0';
+      dict1["0001"] = '1';
+      dict1["0010"] = '2';
+      dict1["0011"] = '3';
+      dict1["0100"] = '4';
+      dict1["0101"] = '5';
+      dict1["0110"] = '6';
+      dict1["0111"] = '7';
+      dict1["1000"] = '8';
+      dict1["1001"] = '9';
+      dict1["1010"] = 'A';
+      dict1["1011"] = 'B';
+      dict1["1100"] = 'C';
+      dict1["1101"] = 'D';
+      dict1["1110"] = 'E';
+      dict1["1111"] = 'F';
+      string hex = ""; 
+      for(int i = 0; i < s.length(); i += 4) {
+            hex += dict1[s.substr(i, 4)];
+      }
+      return hex;
+}
+
+void solution() {
+    string m = "100011010";
+    itr(i, 4) {
+        string f, g; cin >> f >> g;
+        string f1 = hexToBinary(f);
+        string g1 = hexToBinary(g);
+        string r_x = division(f1, g1, m);
+        cout << binaryToHex(r_x) << endl;
     }
-    return r_x.substr(i);
+    // int i = 0;
+    // for(; i < r_x.length(); ++i) {
+    //     if(r_x[i] == '1') break;
+    // }
+    // return r_x;
 }
 
 int32_t main() {
     IOS;
-    
-    cout << solution();
+    solution();
+    // cout << solution();
     return 0;
 }
